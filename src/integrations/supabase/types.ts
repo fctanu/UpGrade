@@ -14,7 +14,235 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      availability: {
+        Row: {
+          created_at: string
+          end_time: string
+          id: string
+          is_booked: boolean | null
+          start_time: string
+          tutor_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_time: string
+          id?: string
+          is_booked?: boolean | null
+          start_time: string
+          tutor_id: string
+        }
+        Update: {
+          created_at?: string
+          end_time?: string
+          id?: string
+          is_booked?: boolean | null
+          start_time?: string
+          tutor_id?: string
+        }
+        Relationships: []
+      }
+      bookings: {
+        Row: {
+          availability_id: string
+          commission_amount: number
+          created_at: string
+          id: string
+          learner_id: string
+          payment_status: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          subject: string
+          total_amount: number
+          tutor_amount: number
+          tutor_id: string
+          updated_at: string
+        }
+        Insert: {
+          availability_id: string
+          commission_amount: number
+          created_at?: string
+          id?: string
+          learner_id: string
+          payment_status?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          subject: string
+          total_amount: number
+          tutor_amount: number
+          tutor_id: string
+          updated_at?: string
+        }
+        Update: {
+          availability_id?: string
+          commission_amount?: number
+          created_at?: string
+          id?: string
+          learner_id?: string
+          payment_status?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          subject?: string
+          total_amount?: number
+          tutor_amount?: number
+          tutor_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_availability_id_fkey"
+            columns: ["availability_id"]
+            isOneToOne: false
+            referencedRelation: "availability"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          receiver_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          receiver_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          receiver_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          major: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          university_email: string | null
+          updated_at: string
+          user_id: string
+          year_of_study: number | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          major?: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          university_email?: string | null
+          updated_at?: string
+          user_id: string
+          year_of_study?: number | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          major?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          university_email?: string | null
+          updated_at?: string
+          user_id?: string
+          year_of_study?: number | null
+        }
+        Relationships: []
+      }
+      ratings: {
+        Row: {
+          booking_id: string
+          created_at: string
+          id: string
+          learner_id: string
+          rating: number
+          review: string | null
+          tutor_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          id?: string
+          learner_id: string
+          rating: number
+          review?: string | null
+          tutor_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          id?: string
+          learner_id?: string
+          rating?: number
+          review?: string | null
+          tutor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tutor_profiles: {
+        Row: {
+          average_rating: number | null
+          bio: string | null
+          created_at: string
+          credentials: string | null
+          hourly_rate: number | null
+          id: string
+          is_verified: boolean | null
+          subjects: string[] | null
+          total_sessions: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          average_rating?: number | null
+          bio?: string | null
+          created_at?: string
+          credentials?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_verified?: boolean | null
+          subjects?: string[] | null
+          total_sessions?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          average_rating?: number | null
+          bio?: string | null
+          created_at?: string
+          credentials?: string | null
+          hourly_rate?: number | null
+          id?: string
+          is_verified?: boolean | null
+          subjects?: string[] | null
+          total_sessions?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +251,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "learner" | "tutor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +378,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["learner", "tutor"],
+    },
   },
 } as const
